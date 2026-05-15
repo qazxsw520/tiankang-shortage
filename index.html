@@ -27,16 +27,16 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .shell{height:100vh;display:flex;flex-direction:column;overflow:hidden}
 
 /* ── Header ── */
-.hd{display:flex;align-items:center;gap:1rem;padding:.7rem 1.5rem;background:var(--s1);border-bottom:2px solid var(--bd);flex-shrink:0}
-.hd-title{font-size:1.1rem;font-weight:900;color:var(--txb);letter-spacing:-.02em;flex-shrink:0}
+.hd{display:flex;align-items:center;gap:.6rem;padding:.6rem 1rem;background:var(--s1);border-bottom:2px solid var(--bd);flex-shrink:0}
+.hd-title{font-size:1rem;font-weight:900;color:var(--txb);letter-spacing:-.02em;flex-shrink:0}
 .hd-title em{color:var(--r2);font-style:normal}
-.order-tabs{display:flex;gap:.4rem;flex:1;overflow-x:auto;scrollbar-width:none;padding:0 .5rem}
-.order-tabs::-webkit-scrollbar{display:none}
+.order-select{background:var(--s2);border:1.5px solid var(--a);border-radius:8px;color:var(--a2);font-size:.82rem;font-weight:700;font-family:'JetBrains Mono',monospace;padding:.35rem .7rem;cursor:pointer;outline:none;flex-shrink:0}
+.order-select option{background:var(--s1);color:var(--txb)}
 .otab{padding:.3rem 1rem;border-radius:8px;border:1.5px solid var(--bd2);background:transparent;color:var(--txd);font-size:.78rem;font-weight:700;font-family:'JetBrains Mono',monospace;cursor:pointer;transition:all .2s;white-space:nowrap;display:inline-flex;align-items:center;gap:.4rem}
 .otab:hover{border-color:var(--a2);color:var(--a2)}
 .otab.on{background:var(--a);color:#fff;border-color:var(--a);box-shadow:0 0 18px rgba(61,139,253,.25)}
 .otab .pill{font-size:.62rem;padding:.08rem .4rem;border-radius:10px;background:rgba(255,255,255,.15)}
-.hd-live{display:flex;align-items:center;gap:.5rem;margin-left:auto;flex-shrink:0}
+.hd-live{display:flex;align-items:center;gap:.4rem;flex-shrink:0;flex-wrap:nowrap}
 .live-dot{width:8px;height:8px;border-radius:50%;background:var(--txd);flex-shrink:0}
 .live-dot.on{background:var(--g);box-shadow:0 0 8px var(--g);animation:pulse 2s infinite}
 .live-dot.fetching{background:var(--y2);animation:pulse .4s infinite}
@@ -56,11 +56,11 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .sc-l{font-size:.68rem;color:var(--txd);text-transform:uppercase;letter-spacing:.06em}
 
 /* ── Table ── */
-.tw{flex:1;overflow-y:auto;overflow-x:hidden}
+.tw{flex:1;overflow-y:auto;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .tw::-webkit-scrollbar{width:4px}
 .tw::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:2px}
 
-table{width:100%;border-collapse:collapse;table-layout:fixed}
+table{width:100%;border-collapse:collapse;table-layout:fixed;min-width:960px}
 col.c-pri{width:110px}
 col.c-pn {width:115px}
 col.c-mod{width:175px}
@@ -152,13 +152,12 @@ td.col-rep{border-left:1px solid var(--bd2) !important;}
   <!-- Header -->
   <div class="hd">
     <div class="hd-title">缺料<em>看板</em></div>
-    <div class="order-tabs" id="orderTabs"></div>
+    <select class="order-select" id="orderSelect" onchange="switchOrder(this.value)"></select>
     <div class="hd-live">
       <span class="cd" id="cd">—</span>
       <div class="live-dot" id="liveDot"></div>
       <span class="live-text" id="liveText">待機</span>
       <button class="btn-xs" onclick="fetchNow()">立即更新</button>
-      <button class="btn-xs" onclick="document.getElementById('overlay').style.display='flex'">⚙</button>
     </div>
   </div>
 
@@ -190,17 +189,18 @@ td.col-rep{border-left:1px solid var(--bd2) !important;}
 </div>
 
 <script>
-var GAS='', INT=30, cur=null, allData={}, prev={};
+var GAS='https://script.google.com/macros/s/AKfycbyI1azLaZYzPdFAX4SnM4YKoUyYfI9rEQBrECxdRGJlLZQevVrQu6Z4DoN-pTrtX9N2/exec', INT=30, cur=null, allData={}, prev={};
 var mainTimer=null, cdTimer=null, cdVal=0;
 var UK='看板_URL', IK='看板_INT';
 
-// init saved settings
-(function(){
-  var u=localStorage.getItem(UK), i=localStorage.getItem(IK);
-  if(u) document.getElementById('setupUrl').value=u;
-  if(i){document.getElementById('intRange').value=i;document.getElementById('intLabel').textContent=i+' 秒';}
-})();
-document.getElementById('intRange').oninput=function(){document.getElementById('intLabel').textContent=this.value+' 秒';};
+// 直接啟動，跳過設定頁
+window.addEventListener('DOMContentLoaded',function(){
+  document.getElementById('overlay').style.display='none';
+  document.getElementById('shell').style.visibility='visible';
+  fetchNow();
+  mainTimer=setInterval(fetchNow, INT*1000);
+  startCd();
+});
 
 function launch(){
   var u=document.getElementById('setupUrl').value.trim();
@@ -289,19 +289,20 @@ function process(data){
 }
 
 function buildTabs(orders,changed){
-  document.getElementById('orderTabs').innerHTML=orders.map(function(oid){
+  var sel=document.getElementById('orderSelect');
+  var prev=sel.value;
+  sel.innerHTML=orders.map(function(oid){
     var rows=allData[oid]||[];
     var short=rows.filter(function(r){return r.gap<0;}).length;
     var bell=changed[oid]?'🔔 ':'';
-    return '<div class="otab'+(oid===cur?' on':'')+'" onclick="switchOrder(\''+oid+'\')">'+
-      bell+oid+' <span class="pill">'+(short>0?'缺'+short:'✓')+'</span>'+
-    '</div>';
+    var label=bell+oid+(short>0?' (缺'+short+')':' (✓)');
+    return '<option value="'+oid+'"'+(oid===cur?' selected':'')+'>'+label+'</option>';
   }).join('');
+  if(prev&&orders.indexOf(prev)>=0) sel.value=prev;
 }
 
 function switchOrder(oid){
   cur=oid;
-  buildTabs(Object.keys(allData),{});
   renderTable(oid,[]);
   renderStats(oid);
   renderFooter();
