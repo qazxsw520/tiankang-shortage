@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 課程收尾筆記 — 不代勞，要引導</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3ede1;
+    --paper-2:#ebe3d3;
+    --ink:#211d18;
+    --ink-soft:#5a5346;
+    --clay:#c1502e;
+    --clay-deep:#9a3c20;
+    --moss:#5c6b46;
+    --line:#d8cebb;
+    --gold:#b8893a;
+    --serif:"Noto Serif TC",serif;
+    --sans:"Noto Sans TC",sans-serif;
+    --display:"Fraunces",serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:0 28px;position:relative;z-index:2}
+  .em{color:var(--clay);font-style:italic}
+  .em-moss{color:var(--moss);font-style:italic}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:88px 0 56px;border-bottom:1.5px solid var(--line)}
+  .kicker{
+    font-family:var(--display);font-size:.82rem;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--clay-deep);font-weight:600;display:flex;align-items:center;gap:14px;margin-bottom:34px;
+  }
+  .kicker::after{content:"";flex:1;height:1px;background:var(--line)}
+  h1.head{
+    font-family:var(--serif);font-weight:900;font-size:clamp(2.6rem,6.4vw,4.9rem);
+    line-height:1.12;letter-spacing:-.01em;margin-bottom:30px;
+  }
+  .lede{font-family:var(--serif);font-weight:500;font-size:clamp(1.05rem,2vw,1.32rem);
+    color:var(--ink-soft);max-width:680px;line-height:1.7}
+  .meta{display:flex;flex-wrap:wrap;gap:36px;margin-top:44px}
+  .meta .m-label{font-family:var(--display);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+  .meta .m-val{font-family:var(--serif);font-weight:700;font-size:1.05rem}
+  .navcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:48px}
+  .navcard{
+    border:1.5px solid var(--line);border-radius:3px;padding:22px 24px;text-decoration:none;color:var(--ink);
+    background:rgba(255,255,255,.25);transition:.25s;display:block;
+  }
+  .navcard:hover{background:var(--ink);color:var(--paper);transform:translate(-3px,-3px);box-shadow:6px 6px 0 var(--clay)}
+  .navcard .nc-no{font-family:var(--display);font-size:.78rem;letter-spacing:.2em;color:var(--clay);font-weight:600}
+  .navcard:hover .nc-no{color:var(--paper-2)}
+  .navcard .nc-title{font-family:var(--serif);font-weight:700;font-size:1.18rem;margin:6px 0 4px}
+  .navcard .nc-desc{font-size:.86rem;color:var(--ink-soft);line-height:1.55}
+  .navcard:hover .nc-desc{color:#cdc4b3}
+
+  /* ---------- SECTION ---------- */
+  section.blk{padding:74px 0;border-bottom:1.5px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:14px}
+  .sec-no{font-family:var(--display);font-weight:600;font-size:2.6rem;color:var(--line);line-height:1}
+  .sec-tag{font-family:var(--display);font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:var(--clay-deep);font-weight:600}
+  h2{font-family:var(--serif);font-weight:900;font-size:clamp(1.7rem,3.6vw,2.5rem);line-height:1.25;margin-bottom:26px;letter-spacing:-.005em}
+  p.body{font-size:1.02rem;color:#3a352c;margin-bottom:18px;max-width:760px}
+  strong{color:var(--clay-deep);font-weight:700}
+
+  /* 心法 / callout box */
+  .callout{
+    border-left:4px solid var(--clay);background:linear-gradient(90deg,rgba(193,80,46,.07),transparent);
+    padding:22px 26px;margin:30px 0;border-radius:0 4px 4px 0;
+  }
+  .callout .c-label{font-family:var(--display);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--clay);font-weight:600;margin-bottom:8px}
+  .callout p{font-family:var(--serif);font-size:1.06rem;color:var(--ink);line-height:1.65;margin:0}
+
+  /* pull quote */
+  blockquote{margin:46px 0;padding:0 0 0 6px}
+  blockquote .q{font-family:var(--serif);font-weight:700;font-size:clamp(1.4rem,3.2vw,2.05rem);line-height:1.4;letter-spacing:-.01em}
+  blockquote .q::before{content:"“";color:var(--clay);font-size:1.2em;line-height:0;vertical-align:-.25em;margin-right:.04em}
+  blockquote .q::after{content:"”";color:var(--clay);font-size:1.2em;line-height:0;vertical-align:-.45em}
+  blockquote cite{display:block;margin-top:16px;font-style:normal;font-family:var(--display);font-size:.86rem;letter-spacing:.06em;color:var(--ink-soft)}
+  blockquote cite::before{content:"— "}
+
+  /* timeline */
+  .timeline{display:grid;gap:0;margin-top:30px}
+  .tl-item{display:grid;grid-template-columns:64px 1fr;gap:24px;padding:22px 0;border-top:1px solid var(--line);position:relative}
+  .tl-item:last-child{border-bottom:1px solid var(--line)}
+  .tl-no{font-family:var(--display);font-weight:600;font-size:1.7rem;color:var(--clay);line-height:1}
+  .tl-body h3{font-family:var(--serif);font-weight:700;font-size:1.22rem;margin-bottom:6px}
+  .tl-body p{font-size:.94rem;color:var(--ink-soft);max-width:640px}
+  .tl-body .src{font-family:var(--display);font-size:.7rem;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;margin-top:7px}
+
+  /* ladder (3-step) */
+  .ladder{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:34px 0 10px;border:1.5px solid var(--ink)}
+  .rung{padding:26px 22px;border-right:1.5px solid var(--ink);position:relative}
+  .rung:last-child{border-right:none}
+  .rung.peak{background:var(--ink);color:var(--paper)}
+  .rung .r-step{font-family:var(--display);font-size:.72rem;letter-spacing:.2em;color:var(--clay);font-weight:600;text-transform:uppercase}
+  .rung.peak .r-step{color:var(--gold)}
+  .rung .r-title{font-family:var(--serif);font-weight:900;font-size:1.5rem;margin:8px 0 8px}
+  .rung .r-desc{font-size:.9rem;color:var(--ink-soft);line-height:1.6}
+  .rung.peak .r-desc{color:#cdc4b3}
+
+  /* example chips */
+  .chips{display:flex;flex-wrap:wrap;gap:14px;margin-top:26px}
+  .chip{border:1.5px solid var(--line);border-radius:3px;padding:16px 20px;background:rgba(255,255,255,.3);flex:1;min-width:220px}
+  .chip .ch-dept{font-family:var(--display);font-size:.72rem;letter-spacing:.16em;color:var(--moss);text-transform:uppercase;font-weight:600}
+  .chip .ch-name{font-family:var(--serif);font-weight:700;font-size:1.1rem;margin-top:4px}
+
+  /* contrast two-col */
+  .contrast{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:30px;border:1.5px solid var(--line)}
+  .ct{padding:28px 26px}
+  .ct.past{background:rgba(90,83,70,.06)}
+  .ct.now{background:rgba(193,80,46,.06);border-left:1.5px solid var(--line)}
+  .ct .ct-era{font-family:var(--display);font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;margin-bottom:12px}
+  .ct.past .ct-era{color:var(--ink-soft)}
+  .ct.now .ct-era{color:var(--clay)}
+  .ct p{font-size:.96rem;color:#3a352c;line-height:1.7;margin:0}
+
+  /* mindset flow */
+  .flow{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:30px}
+  .flow .node{border:1.5px solid var(--line);padding:18px 24px;border-radius:3px;background:rgba(255,255,255,.3);flex:1;min-width:200px}
+  .flow .node.end{background:var(--clay);border-color:var(--clay);color:var(--paper)}
+  .flow .node .n-k{font-family:var(--display);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;opacity:.7}
+  .flow .node .n-t{font-family:var(--serif);font-weight:700;font-size:1.12rem;margin-top:4px}
+  .flow .arrow{font-family:var(--display);font-size:1.6rem;color:var(--clay)}
+
+  /* synthesis */
+  .synth{padding:84px 0 30px}
+  .synth h2{font-size:clamp(1.9rem,4.6vw,3rem);margin-bottom:34px}
+  .synth-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin:38px 0}
+  .scard{border-top:3px solid var(--clay);padding-top:20px}
+  .scard h4{font-family:var(--serif);font-weight:900;font-size:1.3rem;margin-bottom:14px}
+  .scard .row{display:flex;gap:10px;margin-bottom:9px;font-size:.94rem}
+  .scard .row .lab{font-family:var(--display);font-size:.7rem;letter-spacing:.12em;color:var(--clay);text-transform:uppercase;min-width:54px;padding-top:4px;font-weight:600}
+  .scard .row .txt{color:#3a352c;line-height:1.6}
+
+  .final{background:var(--ink);color:var(--paper);border-radius:4px;padding:48px 40px;margin-top:30px;text-align:center}
+  .final .fq{font-family:var(--serif);font-weight:700;font-size:clamp(1.4rem,3.4vw,2rem);line-height:1.45}
+  .final .fq .hl{color:var(--gold)}
+
+  footer{padding:48px 0 60px;text-align:center}
+  footer .f-line{font-family:var(--display);font-size:.78rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-soft)}
+  footer .f-note{margin-top:14px;font-size:.78rem;color:var(--ink-soft);max-width:560px;margin-left:auto;margin-right:auto;line-height:1.6;font-style:italic}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  @media(max-width:720px){
+    .ladder{grid-template-columns:1fr}.rung{border-right:none;border-bottom:1.5px solid var(--ink)}.rung:last-child{border-bottom:none}
+    .contrast{grid-template-columns:1fr}.ct.now{border-left:none;border-top:1.5px solid var(--line)}
+    .synth-grid{grid-template-columns:1fr}
+    .flow .arrow{transform:rotate(90deg);width:100%;text-align:center}
+    .hero{padding:60px 0 40px}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="kicker reveal">AI 課程 · 收尾 Keynote 筆記</div>
+    <h1 class="head reveal">不<span class="em">代勞</span>，要<span class="em">引導</span>。<br>讓 AI 成為會陪你<span class="em-moss">思考</span>的夥伴。</h1>
+    <p class="lede reveal">這場收尾講的核心只有一句：AI 不是「一鍵生成」的魔法，而是把你最懂的專業，刻進指令集裡的加速器。它放大你的判斷，卻不替你做決策——因為人，始終是核心。</p>
+
+    <div class="meta reveal">
+      <div><div class="m-label">Session</div><div class="m-val">一日 AI 實作課程 · 收尾</div></div>
+      <div><div class="m-label">主講</div><div class="m-val">趙田（田哥）</div></div>
+      <div><div class="m-label">協同</div><div class="m-val">兔子 · Cindy</div></div>
+      <div><div class="m-label">主題</div><div class="m-val">AI Agent × 管理工具落地</div></div>
+    </div>
+
+    <nav class="navcards">
+      <a class="navcard reveal" href="#s1"><div class="nc-no">01</div><div class="nc-title">設計哲學</div><div class="nc-desc">為什麼是「不代勞、要引導」？因為人才是核心。</div></a>
+      <a class="navcard reveal" href="#s2"><div class="nc-no">02</div><div class="nc-title">三個 Agent</div><div class="nc-desc">看問題五層次 → Ideas → 面談軍師，把難落地的工具變可操作。</div></a>
+      <a class="navcard reveal" href="#s3"><div class="nc-no">03</div><div class="nc-title">從教工具到建 AI</div><div class="nc-desc">你也能成為團隊的 AI 教練，刻出專屬 Agent。</div></a>
+      <a class="navcard reveal" href="#s4"><div class="nc-no">04</div><div class="nc-title">心態篇</div><div class="nc-desc">擁抱 AI 不是為了時髦，而是為了生存。</div></a>
+    </nav>
+  </header>
+
+  <!-- S1 設計哲學 -->
+  <section class="blk" id="s1">
+    <div class="sec-head reveal"><span class="sec-no">01</span><span class="sec-tag">Design Philosophy</span></div>
+    <h2 class="reveal">和「一鍵生成」相反：<br>我們刻意讓 AI <span class="em">不替你做完</span></h2>
+    <p class="body reveal">外面很多 AI 工具強調「一鍵生成」，輸入問題、直接吐答案。這套課程設計的 Agent 邏輯不同——強調的是<strong>不代勞、要引導</strong>。AI 負責幫你思考、幫你整理，但最後那個判斷與決策，刻意留給人來做。</p>
+    <p class="body reveal">講者舉了聯發科的例子：AI 可以替主管省下大量寫報告、查資料的時間，但最後的決策、那個心智模式的判斷，還是得由人來下。這正是「人才是核心」的具體展現。</p>
+
+    <div class="callout reveal">
+      <div class="c-label">關鍵心法</div>
+      <p>AI 是「來幫助你思考」的，不是「來取代你思考」的。把流程裡可重複的部分交給它，把判斷與決策留給自己——這才是健康的協作關係。</p>
+    </div>
+
+    <blockquote class="reveal">
+      <div class="q">AI 不僅僅是一個工具，它更像是一個可以跟你協作的夥伴——不罷工、不休息，隨時隨地陪伴你。</div>
+      <cite>趙田，談 AI 的本質（重述版本）</cite>
+    </blockquote>
+  </section>
+
+  <!-- S2 三個 Agent -->
+  <section class="blk" id="s2">
+    <div class="sec-head reveal"><span class="sec-no">02</span><span class="sec-tag">Three Agents</span></div>
+    <h2 class="reveal">把「聽得懂、回去卻不會用」的<br>管理工具，變成<span class="em-moss">可操作系統</span></h2>
+    <p class="body reveal">看問題五層次、OGSM、Ideas、績效面談——這些管理工具上課時都聽得懂，回到崗位卻不知道怎麼用。今天的做法，是透過 AI Agent 把它們變成可執行、可操作的輔助系統。當天交付的，是三套指令集：</p>
+
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="tl-no">01</div>
+        <div class="tl-body">
+          <h3>看問題五層次 Agent</h3>
+          <p>把「拆解問題」的思考框架做成可對話的引導流程，帶使用者一層層往下追到根因，而不是直接給結論。</p>
+        </div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-no">02</div>
+        <div class="tl-body">
+          <h3>Ideas Agent</h3>
+          <p>把發想與規劃的方法論轉成可操作的輔助系統，協助使用者把模糊的想法結構化。</p>
+        </div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-no">03</div>
+        <div class="tl-body">
+          <h3>面談軍師 Agent</h3>
+          <p>把績效面談這類最需要臨場判斷、最難標準化的場景，做成事前可演練、事中可參考的軍師。</p>
+          <div class="src">由 兔子 分享</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout reveal">
+      <div class="c-label">這三套指令集代表什麼</div>
+      <p>它們是一整天課程的核心濃縮：AI 是加速器，是把原本要做很久、想很久、甚至想不清楚的事，變得更有條理、更快速的工具。</p>
+    </div>
+  </section>
+
+  <!-- S3 從教工具到建AI -->
+  <section class="blk" id="s3">
+    <div class="sec-head reveal"><span class="sec-no">03</span><span class="sec-tag">Tool → Agent → AI</span></div>
+    <h2 class="reveal">你也能成為團隊的 <span class="em">AI 教練</span>，<br>刻出屬於你們部門的 Agent</h2>
+    <p class="body reveal">講者給主管的建議：別把這些工具當成新奇玩具。回去之後，在團隊裡推動「AI 協作」的工作模式——而且不是由上而下強迫大家用，而是<strong>你自己先用，用了確實有幫助，再分享給團隊</strong>。</p>
+
+    <div class="ladder">
+      <div class="rung reveal"><div class="r-step">Step 01</div><div class="r-title">教工具</div><div class="r-desc">學會怎麼操作 AI 工具，先把基本功用起來。</div></div>
+      <div class="rung reveal"><div class="r-step">Step 02</div><div class="r-title">教 Agent</div><div class="r-desc">把專業知識與 SOP 寫進指令集，刻出能引導他人的 Agent。</div></div>
+      <div class="rung peak reveal"><div class="r-step">Step 03</div><div class="r-title">建 AI</div><div class="r-desc">把 Agent 系統化，變成企業內部的智慧資產。</div></div>
+    </div>
+
+    <p class="body reveal" style="margin-top:30px">把專業知識、把 SOP 寫進指令集，等於擁有無數個不知疲倦的超級助理。每個部門都能依自己的需求刻出 Agent：</p>
+    <div class="chips">
+      <div class="chip reveal"><div class="ch-dept">業務部門</div><div class="ch-name">客訴處理 Agent</div></div>
+      <div class="chip reveal"><div class="ch-dept">行銷部門</div><div class="ch-name">文案發想 Agent</div></div>
+    </div>
+
+    <h2 class="reveal" style="margin-top:58px;font-size:clamp(1.5rem,3.2vw,2.1rem)">過去要花大錢請顧問，<br>現在它就在你的<span class="em-moss">手機裡</span></h2>
+    <div class="contrast">
+      <div class="ct past reveal">
+        <div class="ct-era">過去</div>
+        <p>可能要花上好幾萬塊去上課，甚至請顧問進公司輔導，才能換到一點點成效。</p>
+      </div>
+      <div class="ct now reveal">
+        <div class="ct-era">現在</div>
+        <p>只要你願意用，把它放進手機裡、電腦裡，它就是你專屬的顧問。</p>
+      </div>
+    </div>
+
+    <blockquote class="reveal">
+      <div class="q">這也是我們在做的事——從「教工具」到「建 AI」，幫企業不只學會用 AI，更學會把 AI 變成自己的智慧資產。</div>
+      <cite>趙田，談團隊現在的方向（重述版本）</cite>
+    </blockquote>
+  </section>
+
+  <!-- S4 心態篇 -->
+  <section class="blk" id="s4">
+    <div class="sec-head reveal"><span class="sec-no">04</span><span class="sec-tag">Mindset</span></div>
+    <h2 class="reveal">面對會顛覆工作模式的新科技，<br>別停在「抗拒」這一步</h2>
+    <p class="body reveal">很多時候，面對像 AI 這種看起來會顛覆工作模式的東西，第一反應都是抗拒，或覺得「這只是一時的時髦」。但這個時代變動得太快了，不能再用過去的思維去面對未來的挑戰。</p>
+
+    <div class="flow">
+      <div class="node reveal"><div class="n-k">第一反應</div><div class="n-t">抗拒 · 覺得只是一時時髦</div></div>
+      <div class="arrow reveal">→</div>
+      <div class="node end reveal"><div class="n-k">該有的心態</div><div class="n-t">為了生存與競爭力而擁抱</div></div>
+    </div>
+
+    <blockquote class="reveal">
+      <div class="q">擁抱 AI，不是為了追求時髦，而是為了生存——為了在競爭激烈的市場裡，保持我們的競爭力。</div>
+      <cite>趙田，收尾（重述版本）</cite>
+    </blockquote>
+  </section>
+
+  <!-- 綜合觀察 -->
+  <section class="synth reveal">
+    <div class="sec-head"><span class="sec-tag">Field Notes · 筆記者綜合觀察</span></div>
+    <h2>整場收尾，其實只在反覆說一件事：<br><span class="em">AI 放大你，但生不出那個「你」。</span></h2>
+    <p class="body">三套 Agent、三層階梯（教工具 → 教 Agent → 建 AI）、一個心態轉折——表面講的是工具，底層講的都是同一件事：先把你的專業整理成 AI 能讀懂的結構與指令，AI 才能替你加速。它能把「一」放大成「十」，卻無法替你生出那個「一」。</p>
+
+    <div class="synth-grid">
+      <div class="scard">
+        <h4>協作觀</h4>
+        <div class="row"><span class="lab">主張</span><span class="txt">不代勞、要引導，刻意把決策留給人。</span></div>
+        <div class="row"><span class="lab">理由</span><span class="txt">AI 省下查找與整理的時間，心智判斷仍需人下。</span></div>
+        <div class="row"><span class="lab">啟示</span><span class="txt">把可重複的交給它，把判斷握在自己手裡。</span></div>
+      </div>
+      <div class="scard">
+        <h4>推動觀</h4>
+        <div class="row"><span class="lab">主張</span><span class="txt">由下而上：自己先用，有效再分享。</span></div>
+        <div class="row"><span class="lab">理由</span><span class="txt">強迫使用難以生根，親身受益才會擴散。</span></div>
+        <div class="row"><span class="lab">啟示</span><span class="txt">當教練，用指令集把 SOP 變成部門 Agent。</span></div>
+      </div>
+    </div>
+
+    <div class="final">
+      <div class="fq">當工具做好了，工具是來<span class="hl">協助你思考</span>的。<br>該把時間，從操作工具，<span class="hl">還給決策</span>。</div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="f-line">AI 課程 · Field Notes · 趙田 × 兔子 × Cindy</div>
+    <div class="f-note">本筆記由交錯亂序的逐字稿依語意重建，引述均為「重述版本」、語義對等；未補入原稿未明確出現的人名、數字或事件。</div>
+  </footer>
+
+</div>
+
+<script>
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(Math.min(i%5,4)*0.06)+'s';io.observe(el)});
+</script>
+</body>
+</html>
